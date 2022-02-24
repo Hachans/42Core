@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:34:25 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/02/24 17:48:32 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/02/24 18:48:37 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,16 @@
 
 typedef struct s_data
 {
-	char	*time_to_die;
-	char	*time_to_eat;
-	char	*time_to_sleep;
-	char	*number_of_philosophers;
-	
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	number_of_times_each_philosopher_must_eat;
+	int	number_of_philosophers;
+	int	forks;
 }				t_data;
 
+// utils.c
+int	ft_atoi(const char *nptr);
+int	int_check(char *nptr);
 
 #endif
