@@ -1,6 +1,6 @@
 42Core projects 
 
-libft: Create a static library, consisted of useful basic functions.                                                                                                  
+libft: Create a library consisting of useful basic functions.                                                                                                  
 get_next_line: Code a function that returns a line read from a file descriptor.                                                                                                     
 born2beRoot: Set up a server inside a Virtual Machine.                                                                                                                           
 ft_printf: Recreating a simpler version of printf.                                                                                                                               
