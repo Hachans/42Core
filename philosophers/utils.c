@@ -6,14 +6,14 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:24:04 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/02/24 18:38:46 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/02/24 18:52:46 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	int_check(char *nptr)
 {
 	int	result;
-	int		i;
+	int	i;
 
 	result = 0;
 	i = 0;

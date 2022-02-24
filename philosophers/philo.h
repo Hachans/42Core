@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:34:25 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/02/24 18:48:37 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/02/24 18:53:16 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct s_data
 }				t_data;
 
 // utils.c
-int	ft_atoi(const char *nptr);
 int	int_check(char *nptr);
 
 #endif
