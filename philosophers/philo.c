@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:20:32 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/03/01 12:37:01 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/01 13:19:23 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int	check_death(t_data *in)
 {
 	if (!in)
 		exit(0);
-	// long long	curr_time;
+	long long	curr_time;
 
-	// curr_time = get_time();
-	// if (curr_time > in->philos->last_meal_time + in->time_to_die)
-	// 	return (1);
+	curr_time = get_time();
+	if (curr_time > in->philos->last_meal_time + in->time_to_die)
+		return (1);
 	return (0);
 }	
 
@@ -44,11 +44,11 @@ void	*routine(void *info)
 	// printf("Philosopher %d took a fork\n", in->philos->id);
 	// pthread_mutex_lock(&(in->fork_mtx[in->philos->r_fork]));
 	// printf("Philosopher %d took a fork\n", in->philos->id);
-	// while (!check_death(in))
-	// {
+	while (!check_death(in))
+	{
 	// // grab_forks(info);
 	// 	printf("lala\n");
-	// }
+	}
 	return (0);
 }
 
