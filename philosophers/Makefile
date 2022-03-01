@@ -6,7 +6,7 @@
 #    By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/24 17:31:00 by ekraujin          #+#    #+#              #
-#    Updated: 2022/02/24 18:24:55 by ekraujin         ###   ########.fr        #
+#    Updated: 2022/02/28 01:45:09 by ekraujin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror -pthread
 
-SRC = philo.c utils.c\
+SRC = philo.c utils.c check.c\
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,45 +6,108 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:20:32 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/02/24 18:48:18 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/01 12:37:01 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <stdio.h>
 
-void	checkninit(t_data *philo, int argc, char **argv)
+void	grab_forks(t_data *in)
 {
-	philo->number_of_philosophers = int_check(argv[1]);
-	philo->time_to_die = int_check(argv[2]);
-	philo->time_to_eat = int_check(argv[3]);
-	philo->time_to_sleep = int_check(argv[4]);
-	if (philo->number_of_philosophers < 0 || philo->time_to_die < 0 \
-		|| philo->time_to_eat < 0 || philo->time_to_sleep < 0)
+	printf("Philosopher %d took a fork\n", in->philos->id);
+	pthread_mutex_lock(&(in->fork_mtx[in->philos->l_fork]));
+	printf("Philosopher %d took a fork\n", in->philos->id);
+	pthread_mutex_lock(&(in->fork_mtx[in->philos->r_fork]));
+	printf("Philosopher %d took a fork\n", in->philos->id);
+}
+
+int	check_death(t_data *in)
+{
+	if (!in)
+		exit(0);
+	// long long	curr_time;
+
+	// curr_time = get_time();
+	// if (curr_time > in->philos->last_meal_time + in->time_to_die)
+	// 	return (1);
+	return (0);
+}	
+
+void	*routine(void *info)
+{
+	t_data	*in;
+	
+	in = (t_data *) info;
+	printf("Philosopher %d took a fork\n", in->philos->id);
+	// pthread_mutex_lock(&(in->fork_mtx[in->philos->l_fork]));
+	// printf("Philosopher %d took a fork\n", in->philos->id);
+	// pthread_mutex_lock(&(in->fork_mtx[in->philos->r_fork]));
+	// printf("Philosopher %d took a fork\n", in->philos->id);
+	// while (!check_death(in))
+	// {
+	// // grab_forks(info);
+	// 	printf("lala\n");
+	// }
+	return (0);
+}
+
+int	init_table(t_data *info)
+{
+	int	i;
+	
+	i = 0;
+	while (i < info->number_of_philosophers)
 	{
-		write(2, "Invalid argument\n", 18);
-		exit (0);
+		if (pthread_create(&(info->philos[i].thrd_id), NULL, &routine, (void *)&(info->philos[i])))
+			return (0);
+		i++;
 	}
-	philo->forks = philo->number_of_philosophers;
-	if (argc == 6)
+	i = 0;
+	while (i < info->number_of_philosophers)
 	{
-		philo->number_of_times_each_philosopher_must_eat = int_check(argv[5]);
-		if (philo->number_of_times_each_philosopher_must_eat < 0)
-		{
-			write(2, "Invalid argument\n", 18);
-			exit (0);
-		}
+		if (pthread_join(info->philos[i].thrd_id, NULL))
+			return (0);
+		i++;
 	}
+	return (1);
+}
+
+int	init_philo(t_data *info)
+{
+	int	i;
+	
+	i = 0;
+	info->philos = malloc(sizeof(t_philo) * info->number_of_philosophers);
+	if (!info->philos)
+		return (0);
+	while (i < info->number_of_philosophers)
+	{
+		info->philos[i].id = i + 1;
+		info->philos[i].l_fork = i;
+		info->philos[i].r_fork = (i + 1) % info->number_of_philosophers;
+		info->philos[i].last_meal_time = 0;
+		info->philos[i].eaten_meals = 0;
+		i++;
+	}
+	info->fork_mtx = malloc(sizeof(t_philo) * info->number_of_philosophers);
+	if (!info->fork_mtx)
+		return (0);
+	i = -1;
+	while (++i < info->number_of_philosophers)
+		pthread_mutex_init(&(info->fork_mtx[i]), NULL);
+	return (1);
 }
 
 int	main(int argc, char **argv)
 {
-	t_data	philo;
+	t_data	info;
 
-	if (argc < 5 || argc > 6)
-	{
-		write(2, "Invalid argument count.\n", 25);
-		exit(0);
-	}
-	checkninit(&philo, argc, argv);
+	if (!check_args(&info, argc, argv))
+		return (1);
+	if (!init_philo(&info))
+		return (2);
+	init_table(&info);
+	printf("Got here\n");
 	return (0);
 }

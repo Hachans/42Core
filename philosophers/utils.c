@@ -6,9 +6,11 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:24:04 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/02/24 18:52:46 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/02/28 01:53:38 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "philo.h"
 
 int	int_check(char *nptr)
 {
@@ -35,27 +37,12 @@ int	int_check(char *nptr)
 	return (result);
 }
 
-int	ft_atoi(const char *nptr)
+long long	get_time(void)
 {
-	int	i;
-	int	sign;
-	int	result;
-
-	i = 0;
-	sign = 1;
-	result = 0;
-	while (nptr[i] != '\0' && (nptr[i] == ' ' || nptr[i] == '\n'
-			|| nptr[i] == '\f' || nptr[i] == '\r' || nptr[i] == '\t'
-			|| nptr[i] == '\v'))
-		i++;
-	if (nptr[i] == '-')
-		sign = -1;
-	if (nptr[i] == '+' || nptr[i] == '-' )
-		i++;
-	while (nptr[i] >= '0' && nptr[i] <= '9')
-	{
-		result = result * 10 + (nptr[i] - '0');
-		i++;
-	}
-	return (sign * result);
+	struct timeval	tp;
+	long long time;
+	
+	gettimeofday(&tp, NULL);
+	time = (tp.tv_sec * 1000) + (tp.tv_usec / 1000);
+	return (time);
 }
