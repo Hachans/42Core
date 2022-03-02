@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:20:32 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/03/01 13:22:24 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/02 20:44:49 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,31 @@ int	check_death(t_data *in)
 	long long	curr_time;
 
 	curr_time = get_time();
-	printf("%d\n", in->time_to_die);
+	// printf("%d\n", in->time_to_die);
 	if (curr_time > in->philos->last_meal_time + in->time_to_die)
 		return (1);
 	return (0);
 }	
 
-void	*routine(void *info)
+void	*routine(void *philos)
 {
-	t_data	*in;
+	t_philo	*ph;
+	t_data *in;
 	
-	in = (t_data *) info;
+	ph = (t_philo *) philos;
+	in = ph->info;
+	printf("%d\n", in->time_to_die);
+	// printf("%d\n", in->philos[0].misc);
 	// printf("Philosopher %d took a fork\n", in->philos->id);
 	// pthread_mutex_lock(&(in->fork_mtx[in->philos->l_fork]));
 	// printf("Philosopher %d took a fork\n", in->philos->id);
 	// pthread_mutex_lock(&(in->fork_mtx[in->philos->r_fork]));
 	// printf("Philosopher %d took a fork\n", in->philos->id);
-	while (!check_death(in))
-	{
+	// while (!check_death(in))
+	// {
 	// // grab_forks(info);
 	// 	printf("lala\n");
-	}
+	// }
 	return (0);
 }
 
@@ -58,6 +62,7 @@ int	init_table(t_data *info)
 	int	i;
 	
 	i = 0;
+	printf("%d\n", info->time_to_die);
 	while (i < info->number_of_philosophers)
 	{
 		if (pthread_create(&(info->philos[i].thrd_id), NULL, &routine, (void *)&(info->philos[i])))
@@ -88,7 +93,7 @@ int	init_philo(t_data *info)
 		info->philos[i].l_fork = i;
 		info->philos[i].r_fork = (i + 1) % info->number_of_philosophers;
 		info->philos[i].last_meal_time = 0;
-		info->philos[i].eaten_meals = 0;
+		info->philos[i].eaten_meals = 2;
 		i++;
 	}
 	info->fork_mtx = malloc(sizeof(t_philo) * info->number_of_philosophers);

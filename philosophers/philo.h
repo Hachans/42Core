@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:34:25 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/03/01 12:33:22 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/02 20:34:37 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 typedef struct s_philo
 {
-	int			misc;
 	int			id;
 	int			l_fork;
 	int			r_fork;
