@@ -6,54 +6,77 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:20:32 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/03/02 20:44:49 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/03 21:49:03 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdio.h>
 
-void	grab_forks(t_data *in)
+void	my_sleep(t_philo *ph, int sleep)
 {
-	printf("Philosopher %d took a fork\n", in->philos->id);
-	pthread_mutex_lock(&(in->fork_mtx[in->philos->l_fork]));
-	printf("Philosopher %d took a fork\n", in->philos->id);
-	pthread_mutex_lock(&(in->fork_mtx[in->philos->r_fork]));
-	printf("Philosopher %d took a fork\n", in->philos->id);
+	long long curr;
+
+	curr = get_time();
+	pthread_mutex_lock(&ph->info->sleep);
+	printf("%lld Philo %d is sleeping\n",get_time() - ph->info->start, ph->id);
+	while (get_time() < (curr + sleep))
+	{
+		usleep(400);
+		check_death(ph);
+	}
+	pthread_mutex_unlock(&ph->info->sleep);
 }
 
-int	check_death(t_data *in)
+void	eat(t_philo *ph, int eating)
 {
-	if (!in)
-		exit(0);
-	long long	curr_time;
+	long long	curr;
 
-	curr_time = get_time();
-	// printf("%d\n", in->time_to_die);
-	if (curr_time > in->philos->last_meal_time + in->time_to_die)
-		return (1);
-	return (0);
-}	
+	curr = get_time();
+	pthread_mutex_lock(&ph->info->eat);
+	printf("%lld Philo %d is eating\n",get_time() - ph->info->start, ph->id);
+	while (get_time() < (curr + eating))
+	{
+		usleep(400);
+		check_death(ph);
+	}
+	pthread_mutex_unlock(&ph->info->eat);
+	ph->eaten_meals++;
+	ph->last_meal_time = get_time();
+}
+
+void	grab_forks(t_philo *ph)
+{
+	pthread_mutex_lock(&(ph->info->fork_mtx[ph->l_fork]));
+	printf("%lld Philo %d took a fork\n",get_time() - ph->info->start, ph->id);
+	pthread_mutex_lock(&(ph->info->fork_mtx[ph->r_fork]));
+	printf("%lld Philo %d took a fork\n",get_time() - ph->info->start, ph->id);
+	eat(ph, ph->info->time_to_eat);
+	pthread_mutex_unlock(&(ph->info->fork_mtx[ph->l_fork]));
+	pthread_mutex_unlock(&(ph->info->fork_mtx[ph->r_fork]));
+	my_sleep(ph, ph->info->time_to_sleep);
+	printf("%lld Philo %d is thinking\n",get_time() - ph->info->start, ph->id);
+}
 
 void	*routine(void *philos)
 {
 	t_philo	*ph;
-	t_data *in;
 	
 	ph = (t_philo *) philos;
-	in = ph->info;
-	printf("%d\n", in->time_to_die);
-	// printf("%d\n", in->philos[0].misc);
-	// printf("Philosopher %d took a fork\n", in->philos->id);
-	// pthread_mutex_lock(&(in->fork_mtx[in->philos->l_fork]));
-	// printf("Philosopher %d took a fork\n", in->philos->id);
-	// pthread_mutex_lock(&(in->fork_mtx[in->philos->r_fork]));
-	// printf("Philosopher %d took a fork\n", in->philos->id);
-	// while (!check_death(in))
-	// {
-	// // grab_forks(info);
-	// 	printf("lala\n");
-	// }
+	if (ph->id % 2)
+		usleep(ph->info->time_to_eat);
+	while (ph->info->end == 0)
+	{
+		if (ph->info->meal_flag && ph->eaten_meals == ph->info->number_of_meals)
+		{
+			printf("%lld Philo %d ate all means\n",get_time() - ph->info->start, ph->id);
+			return (0);
+		}
+		check_death(ph);
+		grab_forks(ph);
+	}
+	if (ph->info->end == 1)
+		lock_all(ph);
 	return (0);
 }
 
@@ -62,9 +85,11 @@ int	init_table(t_data *info)
 	int	i;
 	
 	i = 0;
-	printf("%d\n", info->time_to_die);
+	info->end = 0;
+	info->start = get_time();
 	while (i < info->number_of_philosophers)
 	{
+		info->philos[i].last_meal_time = get_time();
 		if (pthread_create(&(info->philos[i].thrd_id), NULL, &routine, (void *)&(info->philos[i])))
 			return (0);
 		i++;
@@ -93,7 +118,8 @@ int	init_philo(t_data *info)
 		info->philos[i].l_fork = i;
 		info->philos[i].r_fork = (i + 1) % info->number_of_philosophers;
 		info->philos[i].last_meal_time = 0;
-		info->philos[i].eaten_meals = 2;
+		info->philos[i].eaten_meals = 0;
+		info->philos[i].info = info;
 		i++;
 	}
 	info->fork_mtx = malloc(sizeof(t_philo) * info->number_of_philosophers);
@@ -114,6 +140,6 @@ int	main(int argc, char **argv)
 	if (!init_philo(&info))
 		return (2);
 	init_table(&info);
-	printf("Got here\n");
+	// clean_table(&info);
 	return (0);
 }

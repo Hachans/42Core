@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:24:04 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/02/28 01:53:38 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/03 21:16:08 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,14 @@ long long	get_time(void)
 	gettimeofday(&tp, NULL);
 	time = (tp.tv_sec * 1000) + (tp.tv_usec / 1000);
 	return (time);
+}
+
+void	lock_all(t_philo *ph)
+{
+	pthread_mutex_lock(&ph->info->eat);
+	pthread_mutex_lock(&ph->info->sleep);
+	pthread_mutex_lock(&(ph->info->fork_mtx[ph->l_fork]));
+	pthread_mutex_lock(&(ph->info->fork_mtx[ph->r_fork]));
+	printf("%lld Philo %d Died\n",get_time() - ph->info->start, ph->id);
+	exit(0);
 }
