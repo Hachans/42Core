@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 01:43:39 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/03/03 21:18:55 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/04 21:00:54 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,4 @@ void	check_death(t_philo *ph)
 	curr_time = get_time();
 	if (curr_time >= (ph->last_meal_time + ph->info->time_to_die))
 		ph->info->end = 1;
-}	
+}

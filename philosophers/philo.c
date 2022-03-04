@@ -6,62 +6,16 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:20:32 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/03/03 21:49:03 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/04 21:12:35 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdio.h>
-
-void	my_sleep(t_philo *ph, int sleep)
-{
-	long long curr;
-
-	curr = get_time();
-	pthread_mutex_lock(&ph->info->sleep);
-	printf("%lld Philo %d is sleeping\n",get_time() - ph->info->start, ph->id);
-	while (get_time() < (curr + sleep))
-	{
-		usleep(400);
-		check_death(ph);
-	}
-	pthread_mutex_unlock(&ph->info->sleep);
-}
-
-void	eat(t_philo *ph, int eating)
-{
-	long long	curr;
-
-	curr = get_time();
-	pthread_mutex_lock(&ph->info->eat);
-	printf("%lld Philo %d is eating\n",get_time() - ph->info->start, ph->id);
-	while (get_time() < (curr + eating))
-	{
-		usleep(400);
-		check_death(ph);
-	}
-	pthread_mutex_unlock(&ph->info->eat);
-	ph->eaten_meals++;
-	ph->last_meal_time = get_time();
-}
-
-void	grab_forks(t_philo *ph)
-{
-	pthread_mutex_lock(&(ph->info->fork_mtx[ph->l_fork]));
-	printf("%lld Philo %d took a fork\n",get_time() - ph->info->start, ph->id);
-	pthread_mutex_lock(&(ph->info->fork_mtx[ph->r_fork]));
-	printf("%lld Philo %d took a fork\n",get_time() - ph->info->start, ph->id);
-	eat(ph, ph->info->time_to_eat);
-	pthread_mutex_unlock(&(ph->info->fork_mtx[ph->l_fork]));
-	pthread_mutex_unlock(&(ph->info->fork_mtx[ph->r_fork]));
-	my_sleep(ph, ph->info->time_to_sleep);
-	printf("%lld Philo %d is thinking\n",get_time() - ph->info->start, ph->id);
-}
 
 void	*routine(void *philos)
 {
 	t_philo	*ph;
-	
+
 	ph = (t_philo *) philos;
 	if (ph->id % 2)
 		usleep(ph->info->time_to_eat);
@@ -69,28 +23,28 @@ void	*routine(void *philos)
 	{
 		if (ph->info->meal_flag && ph->eaten_meals == ph->info->number_of_meals)
 		{
-			printf("%lld Philo %d ate all means\n",get_time() - ph->info->start, ph->id);
+			printf("%lld Philo %d ate all means\n", \
+				get_time() - ph->info->start, ph->id);
 			return (0);
 		}
 		check_death(ph);
 		grab_forks(ph);
 	}
-	if (ph->info->end == 1)
-		lock_all(ph);
 	return (0);
 }
 
 int	init_table(t_data *info)
 {
 	int	i;
-	
+
 	i = 0;
 	info->end = 0;
 	info->start = get_time();
 	while (i < info->number_of_philosophers)
 	{
 		info->philos[i].last_meal_time = get_time();
-		if (pthread_create(&(info->philos[i].thrd_id), NULL, &routine, (void *)&(info->philos[i])))
+		if (pthread_create(&(info->philos[i].thrd_id), NULL, \
+			&routine, (void *)&(info->philos[i])))
 			return (0);
 		i++;
 	}
@@ -101,13 +55,14 @@ int	init_table(t_data *info)
 			return (0);
 		i++;
 	}
+	lock_all(info);
 	return (1);
 }
 
 int	init_philo(t_data *info)
 {
 	int	i;
-	
+
 	i = 0;
 	info->philos = malloc(sizeof(t_philo) * info->number_of_philosophers);
 	if (!info->philos)
@@ -138,8 +93,11 @@ int	main(int argc, char **argv)
 	if (!check_args(&info, argc, argv))
 		return (1);
 	if (!init_philo(&info))
+	{
+		clean_table(&info);
 		return (2);
+	}
 	init_table(&info);
-	// clean_table(&info);
+	clean_table(&info);
 	return (0);
 }

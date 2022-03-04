@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:34:25 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/03/03 21:16:39 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/04 20:56:30 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 
 typedef struct s_philo
 {
-	int			id;
-	int			l_fork;
-	int			r_fork;
-	int			eaten_meals;
-	long long	last_meal_time;
-	pthread_t	thrd_id;
+	int				id;
+	int				l_fork;
+	int				r_fork;
+	int				eaten_meals;
+	long long		last_meal_time;
+	pthread_t		thrd_id;
 	struct s_data	*info;
 	struct timeval	tp;
 }				t_philo;
@@ -50,10 +50,16 @@ typedef struct s_data
 // utils.c
 int			int_check(char *nptr);
 long long	get_time(void);
-void	lock_all(t_philo *ph);
+void		lock_all(t_data *ph);
+void		clean_table(t_data *info);
 
 // check.c
 int			check_args(t_data *info, int argc, char **argv);
 void		check_death(t_philo *ph);
+
+// meal.c
+void		my_sleep(t_philo *ph, int sleep);
+void		eat(t_philo *ph, int eating);
+void		grab_forks(t_philo *ph);
 
 #endif
