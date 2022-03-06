@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 17:34:25 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/03/04 20:56:30 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/06 15:49:49 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct s_philo
 	long long		last_meal_time;
 	pthread_t		thrd_id;
 	struct s_data	*info;
-	struct timeval	tp;
 }				t_philo;
 
 typedef struct s_data
@@ -52,6 +51,7 @@ int			int_check(char *nptr);
 long long	get_time(void);
 void		lock_all(t_data *ph);
 void		clean_table(t_data *info);
+void		handle_one(t_data *info);
 
 // check.c
 int			check_args(t_data *info, int argc, char **argv);

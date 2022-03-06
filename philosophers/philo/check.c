@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 01:43:39 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/03/04 21:00:54 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/06 21:49:12 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	check_args(t_data *info, int argc, char **argv)
 {
-	if (argc < 5 || argc > 6)
-		return (0);
 	info->number_of_philosophers = int_check(argv[1]);
 	info->time_to_die = int_check(argv[2]);
 	info->time_to_eat = int_check(argv[3]);
@@ -32,9 +30,11 @@ int	check_args(t_data *info, int argc, char **argv)
 		|| info->time_to_die < 60 || info->time_to_eat < 60 \
 		|| info->time_to_sleep < 60 || info->number_of_meals < 0)
 	{
-		write(2, "Invalid argument count or value.\n", 34);
+		printf("Invalid argument value\n");
 		return (0);
 	}
+	if (info->number_of_philosophers == 1)
+		handle_one(info);
 	return (1);
 }
 
@@ -43,6 +43,6 @@ void	check_death(t_philo *ph)
 	long long	curr_time;
 
 	curr_time = get_time();
-	if (curr_time >= (ph->last_meal_time + ph->info->time_to_die))
+	if (curr_time - ph->last_meal_time >= ph->info->time_to_die)
 		ph->info->end = 1;
 }

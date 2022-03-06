@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:24:04 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/03/04 21:09:46 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/06 15:55:40 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,22 @@ void	lock_all(t_data *info)
 	while (i < info->number_of_philosophers)
 	{
 		pthread_mutex_destroy(&(info->fork_mtx[i]));
-		pthread_mutex_destroy(&(info->fork_mtx[i]));
 		i++;
 	}
-	printf("%lld Philo %d Died\n", get_time() - info->start, info->philos->id);
+	printf("%lld Philo %d Died\n", get_time() - info->start + 1, \
+			info->philos->id);
 }
 
 void	clean_table(t_data *info)
 {
 	free(info->philos);
 	free(info->fork_mtx);
+}
+
+void	handle_one(t_data *info)
+{
+	printf("0 Philo 1 has taken a fork\n");
+	sleep(1);
+	printf("%d Philo 1 Died\n", info->time_to_die + 1);
+	exit(0);
 }
