@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 01:57:16 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/03/08 22:09:43 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/08 22:16:01 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	invalid_top(void)
 	write(1, "Error\nInvalid map\n", 18);
 	exit(0);
 }
+
 void	invalid_map(t_map_render *game)
 {
 	ft_lstclear(&game->map, free);
