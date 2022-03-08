@@ -6,7 +6,7 @@
 /*   By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 10:31:44 by ekraujin          #+#    #+#             */
-/*   Updated: 2022/02/03 02:52:47 by ekraujin         ###   ########.fr       */
+/*   Updated: 2022/03/08 22:09:34 by ekraujin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ enum {
 
 void	invalid_arg(void);
 void	invalid_map(t_map_render *game);
-void invalid_top(void);
+void	invalid_top(void);
 void	make_map(t_map_render *game);
 void	load_assets(t_map_render *game, char c, int x, int y);
 int		map_check(t_map_render *game, t_list **map, int fd);
