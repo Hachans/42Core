@@ -6,7 +6,7 @@
 #    By: ekraujin <ekraujin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/24 17:31:00 by ekraujin          #+#    #+#              #
-#    Updated: 2022/03/06 16:20:32 by ekraujin         ###   ########.fr        #
+#    Updated: 2022/03/23 12:35:15 by ekraujin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRC = philo.c utils.c check.c meal.c\
 OBJ = $(SRC:.c=.o)
 
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) -o $(NAME)
+	$(CC) $(OBJ) $(CFLAGS) -o $(NAME)
 
 all: $(NAME)
 
