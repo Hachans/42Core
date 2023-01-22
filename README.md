@@ -8,3 +8,5 @@
 **so_long:** A simple 2D game, using minilibx library.                                                                                                             
 **philosophers:** Solve the dining philosopher's problem using threads.  
 **NetPractice:** Basic networking using TCP/IP addressing.
+
+Rest will be added soon
